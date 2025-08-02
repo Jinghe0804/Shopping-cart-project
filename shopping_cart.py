@@ -1,5 +1,5 @@
 class Product():
-    def __init__():
+    def __init__(self):
         products = {
             "Category1": {
                 "001" : {
@@ -53,11 +53,29 @@ class Product():
                 }
             }
         }
-    def display_product():
+    def display_product(self):
         print("something")
 
 
 
 
-class ShoppingCart():
+class ShoppingCart(self):
+    def 
+
     def display_all():
+        print("here")
+    
+    def check_stock(self):
+        print("thing")
+
+    def add_item(self):
+        print('some')
+
+    def remove_item(self):
+        print("do")
+
+    def calculate_total(self):
+        print("price in added list + together")
+
+    def checkout(self):
+        print("your total is (calcuate_total) cash or card")
