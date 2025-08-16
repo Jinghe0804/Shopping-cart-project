@@ -76,15 +76,14 @@ class ShoppingCart():
         stock = product.products[item_num]["stock"]
         # compare the quantity with the stock):
         if stock == 0:
-            print("There are currently no stock for", product.products[item_num]['name'])
+            print("There are currently no stock for", product.products[item_num]['name'], "\n")
             return False
         elif quantity >  stock:
-            print("There are only", stock, "stock for", product.products[item_num]['name'])
+            print("There are only", stock, "stock for", product.products[item_num]['name'], "\n")
             return False
         else:
-            print(quantity, product.products[item_num]['name'], "has been added to your cart")
+            print(quantity, product.products[item_num]['name'], "has been added to your cart\n")
             product.products[item_num]["stock"] -= quantity
-            print(stock)
             return True
         
 
@@ -95,9 +94,7 @@ class ShoppingCart():
 
     def calculate_total(self, quantity):
         total = 0
-        # get the item num from list
-        for sublist in my_list:
-            # Access the first element of each sublist (index 0)
+        for sublist in self.shopping_cart:
             item_num = sublist[0]
             item_price = product.products[item_num]["price"]
             total += item_price * quantity
@@ -106,28 +103,77 @@ class ShoppingCart():
 
 
     def checkout(self, quantity):
-        total = calculate_total(quantity)
-        print("Your Total is:," total)
+        total = self.calculate_total(quantity)
+        print('\n---------------------------------------')
+        print('                RECEIPT        ')
+        print('---------------------------------------')
+        for sublist in self.shopping_cart:
+            item_num = sublist[0]
+            quantity = sublist[1]
+            item_desc = product.products[item_num]["name"]
+            item_price = product.products[item_num]["price"]
+            total += item_price * quantity
+            print(str(quantity)+"x", str(item_desc),"       ", "RM"+str(item_price))
+        print("Your Total is:", total)
+        print('Thank you very much!')
+
+
+
+
+def print_options():
+    print("\nEnter a number to proceed")
+    print("1 - Display Catalogue")
+    print("2 - Place item in cart")
+    print("3 - quit\n")
 
 
 
 cart = ShoppingCart()
-
 print("Welcome...")
-print("Enter a number to proceed")
-print("1 - Display Catalogue")
-print("3 - Manage Cart (Delete Items)")
-print("4 - quit")
+print_options()
+option = input("Enter a number (3 to quit):")
 
-option = input("Enter a number (Off to quit):")
+break_to_2 = False
+break_all = False
 
-while option != "4":
+while option != "3":
     if option == "1":
         product.display_product()
     elif option == "2":
+        while True:
+            item_num = input('Enter item number:')
+            if item_num in product.products.keys():
+                try:
+                    quantity = int(input("Enter quantity:"))
+                    if cart.check_stock(item_num, quantity) == True:
+                        cart.add_item(item_num, quantity)
 
-item_num = input("Enter item number.")
-quantity = int(input("Enter quantity:"))
-if cart.check_stock(item_num, quantity) == True:
-    cart.add_item(item_num)
+                        checkout = input("Ready to checkout? (Y/N)\n").lower()
+                        while True:
+                            if checkout == "y":
+                                cart.checkout(quantity)
+                                break_to_2 = True
+                                break
+                            elif checkout == "n":
+                                break_all = True
+                                break
+                            else:
+                                print("Please answer a yes or no")
+                                checkout = input("Ready to checkout? (Y/N)\n").lower()
+                except:
+                    print("Not a quantity.")
+        
+            else:
+                print("Item is not found!")
+            if break_to_2:
+                break
+        if break_all:
+            break
+
+            
+    else:
+        print('Not a valid input(stop trolling!)')
+
+    print_options()
+    option = input("Enter a number (3 to quit):")
 
